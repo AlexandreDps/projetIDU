@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu May  4 10:14:17 2023
-
-@author: Alexandre
-"""
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
