@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri May  5 05:30:29 2023
-
-@author: Alexandre
-"""
-
 from selenium.webdriver.chrome.options import Options
 from pymongo import MongoClient
 import threading
