@@ -375,7 +375,7 @@ $pp=(array)$elements[0];
 						}
 						else
 						{
-							for ($i=0;$i<$arrlength-1;$i++)
+							for ($i=0;$i<$arrlength;$i++)
 							{	
 								echo "<tr>";
 								echo "<td>".$pp['intitule'][$i]."</td>";
