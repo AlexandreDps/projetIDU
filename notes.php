@@ -31,6 +31,7 @@
             right: 0;
             bottom: 0;
             z-index: -1;
+			overflow: auto;
          }
          .container {
            display: flex;
@@ -41,6 +42,7 @@
            margin: 2cm;
            border: none;
            border-radius: 10px;
+		   overflow: auto;
          }
          .widget-container {
            display: flex;
@@ -54,6 +56,7 @@
            border: none;
            border-radius: 10px;
            width: 87%
+		   overflow: auto;
      
          }
          .widget {
@@ -301,6 +304,23 @@ thead th.active,tbody td.active {
        </style>
    </head>
    <body class="main-layout">
+<?php
+require 'vendor/autoload.php';
+
+use MongoDB\Client;
+
+// Instantiate the MongoDB client
+$client = new Client('mongodb://localhost:27017');
+
+// Select a database and collection
+$database = $client->StudentApp;
+$collection = $database->courses_marks;
+
+// Perform operations on the collection
+$result = $collection->find();
+$elements = $result->toArray();
+$grades=(array)$elements[0];
+?>
      <div class="header">
             <div class="row d_flex">
                 <a href="cours.php">Online class</a>
@@ -348,7 +368,28 @@ thead th.active,tbody td.active {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+					<?php 
+						foreach($grades as $r => $r_value) {
+							echo "<tr>";
+							if (strcmp($r,'_id')==0 || strcmp($r, 'user')==0) 
+								{
+									continue;
+									}
+							if  (strcmp(trim($r),'') !=0){
+									echo "<td>".$r."</td>";
+									if (strcmp(trim($r_value),'-')==0)
+										{
+											echo "<td>Not yet available</td>";
+										}
+									else
+									{
+										echo "<td>".$r_value."</td>";
+									}
+							}
+							echo "</tr>";
+						}
+					?>
+					<tr>
                         <td> PROJ832 </td>
                         <td> 16</td>
                     </tr>
