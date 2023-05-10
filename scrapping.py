@@ -20,10 +20,18 @@ def scrapping_moodle(identifiant, password, implicit_wait,chrome_options,driver_
     driver.get('https://moodle.univ-smb.fr/my/')
     #Scrapping devoirs
     devoirs = driver.find_elements(By.PARTIAL_LINK_TEXT, 'doit')
+    matieres = []
+    jour = []
+    heure = []
     for i in range(len(devoirs)):
-        devoirs[i] = devoirs[i].get_attribute("aria-label")
+        devoir_infos = devoirs[i].get_attribute("aria-label")
+        match = re.search(r'(.*) dans  (.*) doit (.*) le (.*), (.*)', devoir_infos)
+        devoirs[i] = match.group(1)
+        matieres.append(match.group(2))
+        jour.append(match.group(4))
+        heure.append(match.group(5))
     collection = db['homework']
-    collection.insert_one({'user':identifiant,'devoirs':devoirs})
+    collection.insert_one({'user':identifiant, 'matieres':matieres, 'activites':devoirs, 'jour':jour, 'heure':heure})
     
     #Scrapping notes et cours
     driver.get("https://moodle.univ-smb.fr/grade/report/overview/index.php")
