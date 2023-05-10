@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu May  4 10:14:17 2023
+
+@author: Alexandre
+"""
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -79,5 +86,19 @@ def scrapping_polytech(identifiant, password, implicit_wait,chrome_options,drive
 
 
 
+######################### Scrapping intranet marks ###########################
 
+def scrapping_marks(identifiant, password, implicit_wait,chrome_options,driver_path,db):
+    driver = webdriver.Chrome(executable_path=driver_path,options=chrome_options)
+    driver.get('https://rvn.grenet.fr/uds/')
+    driver.implicitly_wait(implicit_wait)
+    driver.find_element(By.ID, "username").send_keys(identifiant)
+    driver.find_element(By.ID, "password").send_keys(password)
+    driver.find_element(By.CLASS_NAME, "btn-submit").click()
+    t1 = driver.find_element(By.XPATH, "/html/body/table[3]").get_attribute('innerHTML')
+    t2 = driver.find_element(By.XPATH, "/html/body/table[4]").get_attribute('innerHTML')
+    collection = db['marks_intranet']
+    collection.insert_one({'user':identifiant,
+                           'codeT1' : t1,
+                           'codeT2' : t2})
 
