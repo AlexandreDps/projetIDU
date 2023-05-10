@@ -49,7 +49,11 @@ t2 = threading.Thread(target=s.scrapping_moodle,
 t1.start()
 t2.start()
 t1.join()
-t2.join()                     
+t2.join()  
+
+db['polypoints'].delete_one({})
+db['homework'].delete_one({})
+db['courses_marks'].delete_one({})
                       
 print('Done')
 
