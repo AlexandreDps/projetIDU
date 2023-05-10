@@ -287,6 +287,23 @@ thead th.active,tbody td.active {
        </style>
    </head>
    <body class="main-layout">
+<?php
+require 'vendor/autoload.php';
+
+use MongoDB\Client;
+
+// Instantiate the MongoDB client
+$client = new Client('mongodb://localhost:27017');
+
+// Select a database and collection
+$database = $client->StudentApp;
+$collection = $database->homework;
+
+// Perform operations on the collection
+$result = $collection->find();
+$elements = $result->toArray();
+$hw=(array)$elements[0];
+?>
       <div class="header">
             <div class="row d_flex">
                 <a href="cours.php">Online class</a>
@@ -336,12 +353,25 @@ thead th.active,tbody td.active {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td> INFO831 </td>
-                        <td> Devoir à rendre avant midi : CR + Code</td>
-                        <td> 16 Mai 2023</td>
-                        <td> TP1</td>
-                    </tr>
+                    <?php
+						$arrlength = count($hw['jour']);
+						if ($arrlength == 0)
+						{
+							echo "<td>No homework to be done</td>";
+						}
+						else
+						{
+							for ($i=0;$i<$arrlength-1;$i++)
+							{	
+								echo "<tr>";
+								echo "<td>".$hw['matieres'][$i]."</td>";
+								echo "<td>".$hw['activites'][$i]."</td>";
+								echo "<td>".$hw['jour'][$i]."</td>";
+								echo "<td>".$hw['heure'][$i]."</td>";
+								echo "</tr>";
+							}
+						}
+				?>
 
             </table>
         </section>
