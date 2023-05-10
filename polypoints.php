@@ -298,8 +298,24 @@ thead th.active,tbody td.active {
     color: #6c00bd;
 }
        </style>
-     
    </head>
+<?php
+require 'vendor/autoload.php';
+
+use MongoDB\Client;
+
+// Instantiate the MongoDB client
+$client = new Client('mongodb://localhost:27017');
+
+// Select a database and collection
+$database = $client->StudentApp;
+$collection = $database->polypoints;
+
+// Perform operations on the collection
+$result = $collection->find();
+$elements = $result->toArray();
+$pp=(array)$elements[0];
+?>
    <body class="main-layout">
       <div class="header">
             <div class="row d_flex">
@@ -351,12 +367,26 @@ thead th.active,tbody td.active {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td> Autotech </td>
-                        <td> Respo Com</td>
-                        <td>2 </td>
-                        <td> 05 Avril 2022 </td>
-                    </tr>
+				<?php
+						$arrlength = count($pp['annee']);
+						if ($arrlength == 0)
+						{
+							echo "<td>No polypoints to preview</td>";
+						}
+						else
+						{
+							for ($i=0;$i<$arrlength-1;$i++)
+							{	
+								echo "<tr>";
+								echo "<td>".$pp['intitule'][$i]."</td>";
+								echo "<td>".$pp['intitule_tache'][$i]."</td>";
+								echo "<td>".$pp['nb_points'][$i]."</td>";
+								echo "<td>".$pp['annee'][$i]."</td>";
+								echo "</tr>";
+							}
+						}
+				?>
+				</tbody>
             </table>
         </section>
     </div>
