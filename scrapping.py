@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu May  4 10:14:17 2023
-
-@author: Alexandre
-"""
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -48,8 +41,8 @@ def scrapping_moodle(identifiant, password, implicit_wait,chrome_options,driver_
     for i in range(len(cours)):
         cours_notes[cours[i].text] = notes[i].text
     #Scrapping planning
-    collection = db['courses_marks']
-    collection.insert_one(cours_notes)
+    #collection = db['courses_marks']
+    db['courses_marks'].insert_one(cours_notes)
     
     
 ############################# Scrapping polytech #############################
@@ -84,10 +77,6 @@ def scrapping_polytech(identifiant, password, implicit_wait,chrome_options,drive
                            'annee':annee})
     return [intitule,intitule_tache,nb_points,annee]
 
-
-
-######################### Scrapping intranet marks ###########################
-
 def scrapping_marks(identifiant, password, implicit_wait,chrome_options,driver_path,db):
     driver = webdriver.Chrome(executable_path=driver_path,options=chrome_options)
     driver.get('https://rvn.grenet.fr/uds/')
@@ -96,9 +85,15 @@ def scrapping_marks(identifiant, password, implicit_wait,chrome_options,driver_p
     driver.find_element(By.ID, "password").send_keys(password)
     driver.find_element(By.CLASS_NAME, "btn-submit").click()
     t1 = driver.find_element(By.XPATH, "/html/body/table[3]").get_attribute('innerHTML')
-    t2 = driver.find_element(By.XPATH, "/html/body/table[4]").get_attribute('innerHTML')
+    try:
+        t2 = driver.find_element(By.XPATH, "/html/body/table[4]").get_attribute('innerHTML')
+    except : t2=[]
     collection = db['marks_intranet']
     collection.insert_one({'user':identifiant,
                            'codeT1' : t1,
                            'codeT2' : t2})
+
+
+
+
 

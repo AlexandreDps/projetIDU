@@ -31,7 +31,7 @@
             right: 0;
             bottom: 0;
             z-index: -1;
-			overflow: auto;
+            
          }
          .container {
            display: flex;
@@ -42,7 +42,7 @@
            margin: 2cm;
            border: none;
            border-radius: 10px;
-		   overflow: auto;
+           
          }
          .widget-container {
            display: flex;
@@ -56,7 +56,6 @@
            border: none;
            border-radius: 10px;
            width: 87%
-		   overflow: auto;
      
          }
          .widget {
@@ -97,7 +96,6 @@
     backdrop-filter: blur(7px);
     box-shadow: 0 .4rem .8rem #0005;
     border-radius: .8rem;
-    overflow: hidden;
 }
 
 .table__header {
@@ -151,9 +149,6 @@
 
     margin: .8rem auto;
     border-radius: .6rem;
-
-    overflow: auto;
-    overflow: overlay;
 }
 
 .table__body::-webkit-scrollbar{
@@ -389,10 +384,6 @@ $grades=(array)$elements[0];
 							echo "</tr>";
 						}
 					?>
-					<tr>
-                        <td> PROJ832 </td>
-                        <td> 16</td>
-                    </tr>
             </table>
         </section>
     </div>

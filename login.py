@@ -35,31 +35,29 @@ def empty_collection(collection,db):
         mycollection.drop()
     collection = db[collection]
     collection.insert_one({})
-    
+
 empty_collection('homework',db)
 empty_collection('courses_marks',db)
 empty_collection('polypoints',db)
+empty_collection('planning',db)
 empty_collection('marks_intranet',db)
 
-
 t1 = threading.Thread(target=s.scrapping_polytech, 
-                      args=(IDENTIFIANT, PASSWORD, IMPLICIT_WAIT,CHROME_OPTIONS,DRIVER_PATH,db))
+                    args=(IDENTIFIANT, PASSWORD, IMPLICIT_WAIT,CHROME_OPTIONS,DRIVER_PATH,db))
 t2 = threading.Thread(target=s.scrapping_moodle, 
                       args=(IDENTIFIANT, PASSWORD, IMPLICIT_WAIT,CHROME_OPTIONS,DRIVER_PATH,db))
 t3 = threading.Thread(target=s.scrapping_marks, 
                       args=(IDENTIFIANT, PASSWORD, IMPLICIT_WAIT,CHROME_OPTIONS,DRIVER_PATH,db))
+
 t1.start()
 t2.start()
 t3.start()
 t1.join()
-t2.join()  
-t3.join() 
+t2.join()
+t3.join()
 
 db['polypoints'].delete_one({})
 db['homework'].delete_one({})
 db['courses_marks'].delete_one({})
                       
 print('Done')
-
-    
-   
