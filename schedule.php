@@ -129,15 +129,19 @@
                </div>
             </div>
       </div>
-	  <div style="margin: 50px">
-		<label for="cars" style="color:black">Choose a group:</label>
-			<select name="cars" id="cars">
-				<option value="volvo">A1</option>
-				<option value="saab">A2</option>
-			</select>
-		<br><br>
-	  </div>
-  
+   </div>
+   </br>
+   </br>
+   <h1>Choissisez votre groupe de td:</h1>
+    <form method="POST" action="process.php">
+        <select name="dropdown">
+            <option value="A1">A1</option>
+            <option value="A2">A2</option>
+        </select>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
       
       <script src="js/jquery.min.js"></script>
       <script src="js/bootstrap.bundle.min.js"></script>
@@ -148,3 +152,4 @@
       <script src="js/custom.js"></script>
    </body>
 </html>
+

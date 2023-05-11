@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu May  4 10:14:17 2023
+
+@author: Alexandre
+"""
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -20,18 +27,10 @@ def scrapping_moodle(identifiant, password, implicit_wait,chrome_options,driver_
     driver.get('https://moodle.univ-smb.fr/my/')
     #Scrapping devoirs
     devoirs = driver.find_elements(By.PARTIAL_LINK_TEXT, 'doit')
-    matieres = []
-    jour = []
-    heure = []
     for i in range(len(devoirs)):
-        devoir_infos = devoirs[i].get_attribute("aria-label")
-        match = re.search(r'(.*) dans  (.*) doit (.*) le (.*), (.*)', devoir_infos)
-        devoirs[i] = match.group(1)
-        matieres.append(match.group(2))
-        jour.append(match.group(4))
-        heure.append(match.group(5))
+        devoirs[i] = devoirs[i].get_attribute("aria-label")
     collection = db['homework']
-    collection.insert_one({'user':identifiant, 'matieres':matieres, 'activites':devoirs, 'jour':jour, 'heure':heure})
+    collection.insert_one({'user':identifiant,'devoirs':devoirs})
     
     #Scrapping notes et cours
     driver.get("https://moodle.univ-smb.fr/grade/report/overview/index.php")
@@ -41,8 +40,8 @@ def scrapping_moodle(identifiant, password, implicit_wait,chrome_options,driver_
     for i in range(len(cours)):
         cours_notes[cours[i].text] = notes[i].text
     #Scrapping planning
-    #collection = db['courses_marks']
-    db['courses_marks'].insert_one(cours_notes)
+    collection = db['courses_marks']
+    collection.insert_one(cours_notes)
     
     
 ############################# Scrapping polytech #############################
@@ -77,6 +76,11 @@ def scrapping_polytech(identifiant, password, implicit_wait,chrome_options,drive
                            'annee':annee})
     return [intitule,intitule_tache,nb_points,annee]
 
+
+
+######################### Scrapping intranet marks ###########################
+
+
 def scrapping_marks(identifiant, password, implicit_wait,chrome_options,driver_path,db):
     driver = webdriver.Chrome(executable_path=driver_path,options=chrome_options)
     driver.get('https://rvn.grenet.fr/uds/')
@@ -99,5 +103,63 @@ def scrapping_marks(identifiant, password, implicit_wait,chrome_options,driver_p
 
 
 
+from selenium.webdriver.common.action_chains import ActionChains
+######################### Scrapping moodle/intranet ##########################
 
+def click_elem1(aC,element):
+    aC.move_to_element(element).pause(0.5).double_click(element).perform()
+    aC.move_to_element(element).pause(0.5).double_click(element).perform()
+def click_elem2(aC,element):
+    aC.move_to_element(element).pause(0.5).double_click(element).perform()
+    
+def scrapping_planning(identifiant, password, implicit_wait,chrome_options,driver_path,db):
+    driver = webdriver.Chrome(executable_path=driver_path,options=chrome_options)
+    actionChains = ActionChains(driver)
+    driver.get('https://intranet.univ-smb.fr/')
+    driver.implicitly_wait(implicit_wait)
+    
+    #Connexion
+    driver.find_element(By.ID, "username").send_keys(identifiant)
+    driver.find_element(By.ID, "password").send_keys(password)
+    driver.find_element(By.CLASS_NAME, "btn-submit").click()
+    driver.find_element(By.CLASS_NAME, "bi.bi-calendar").click()
+    driver.switch_to.window(driver.window_handles[1])
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'Etudiant')]"))
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'ANNECY')]"))
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'POLYTECH')]"))
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'EPU-4')]"))
+    click_elem2(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'EPU-4')]"))
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'IDU')]"))
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'IDU-4-')]"))
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'IDU-4-A1')]"))
+    
+    p = driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]").get_attribute('innerHTML')
+    collection = db['planning']
+    collection.insert_one({'user':identifiant,
+                           'planning' : p})
 
+def scrapping_planning2(identifiant, password, implicit_wait,chrome_options,driver_path,db):
+    driver = webdriver.Chrome(executable_path=driver_path,options=chrome_options)
+    actionChains = ActionChains(driver)
+    driver.get('https://intranet.univ-smb.fr/')
+    driver.implicitly_wait(implicit_wait)
+    
+    #Connexion
+    driver.find_element(By.ID, "username").send_keys(identifiant)
+    driver.find_element(By.ID, "password").send_keys(password)
+    driver.find_element(By.CLASS_NAME, "btn-submit").click()
+    driver.find_element(By.CLASS_NAME, "bi.bi-calendar").click()
+    driver.switch_to.window(driver.window_handles[1])
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'Etudiant')]"))
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'ANNECY')]"))
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'POLYTECH')]"))
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'EPU-4')]"))
+    click_elem2(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'EPU-4')]"))
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'IDU')]"))
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'IDU-4-')]"))
+    click_elem1(actionChains,driver.find_element(By.XPATH, "//span[contains(text(),'IDU-4-A2')]"))
+    
+    p = driver.find_element(By.XPATH, "/html/body/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]").get_attribute('innerHTML')
+    collection = db['planning']
+    collection.insert_one({'user':identifiant,
+                           'planning' : p})
