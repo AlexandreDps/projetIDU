@@ -92,7 +92,23 @@
      
    </head>
    <body class="main-layout">
-     
+<?php
+require 'vendor/autoload.php';
+
+use MongoDB\Client;
+
+// Instantiate the MongoDB client
+$client = new Client('mongodb://localhost:27017');
+
+// Select a database and collection
+$database = $client->StudentApp;
+$collection = $database->marks_intranet;
+
+// Perform operations on the collection
+$result = $collection->find();
+$elements = $result->toArray();
+$marks=(array)$elements[0];
+?>
       <div class="header">
             <div class="row d_flex">
                 
@@ -134,23 +150,7 @@
    </div>
    <br></br>
    <br></br>
-  <div class="widget-container">
-    <div class="container">
-      <div class="widget" onclick="window.location.href='page1.html'">
-        <img src="https://lms.zone/pluginfile.php/2378/course/section/421/Cours.gif" alt="Widget 1">
-      </div>
-      <div class="widget" onclick="window.location.href='page2.html'">
-        <img src="https://lms.zone/pluginfile.php/2378/course/section/421/Cours.gif" alt="Widget 2">
-      </div>
-      <div class="widget" onclick="window.location.href='page3.html'">
-        <img src="https://lms.zone/pluginfile.php/2378/course/section/421/Cours.gif" alt="Widget 3">
-      </div>
-      <div class="widget" onclick="window.location.href='page4.html'">
-        <img src="https://lms.zone/pluginfile.php/2378/course/section/421/Cours.gif" alt="Widget 4">
-      </div>
-    </div>
-  </div>
-      
+   <div><?php echo "<table style='margin:10px'>".$marks['codeT1']."</table>";?></div>
       <script src="js/jquery.min.js"></script>
       <script src="js/bootstrap.bundle.min.js"></script>
       <script src="js/jquery-3.0.0.min.js"></script>
