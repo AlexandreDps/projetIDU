@@ -129,7 +129,14 @@
                </div>
             </div>
       </div>
-   </div>
+	  <div style="margin: 50px">
+		<label for="cars" style="color:black">Choose a group:</label>
+			<select name="cars" id="cars">
+				<option value="volvo">A1</option>
+				<option value="saab">A2</option>
+			</select>
+		<br><br>
+	  </div>
   
       
       <script src="js/jquery.min.js"></script>
