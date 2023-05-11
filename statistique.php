@@ -129,7 +129,8 @@
                </div>
             </div>
       </div>
-   </div>
+	  <div >&emsp;&emsp;&emsp;<img src="images/fig1.png" alt="Polypoints" style="margin:50px 0px"><span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
+	  <img src="images/pie_availability.png" alt="Pie chart"></div>
   
       
       <script src="js/jquery.min.js"></script>

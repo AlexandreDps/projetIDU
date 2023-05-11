@@ -88,10 +88,14 @@ def scrapping_marks(identifiant, password, implicit_wait,chrome_options,driver_p
     try:
         t2 = driver.find_element(By.XPATH, "/html/body/table[4]").get_attribute('innerHTML')
     except : t2=[]
+    notes = driver.find_elements(By.XPATH, '//td[@align="right"]')
+    for i in range(len(notes)):
+        notes[i] = float(notes[i].text.replace(",", "."))
     collection = db['marks_intranet']
     collection.insert_one({'user':identifiant,
                            'codeT1' : t1,
-                           'codeT2' : t2})
+                           'codeT2' : t2,
+                           'notes' : notes})
 
 
 

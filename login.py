@@ -34,7 +34,6 @@ def empty_collection(collection,db):
         mycollection = db[collection]
         mycollection.drop()
     collection = db[collection]
-    collection.insert_one({})
 
 empty_collection('homework',db)
 empty_collection('courses_marks',db)
@@ -55,9 +54,5 @@ t3.start()
 t1.join()
 t2.join()
 t3.join()
-
-db['polypoints'].delete_one({})
-db['homework'].delete_one({})
-db['courses_marks'].delete_one({})
                       
 print('Done')

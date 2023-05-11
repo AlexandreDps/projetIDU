@@ -151,6 +151,7 @@ $marks=(array)$elements[0];
    <br></br>
    <br></br>
    <div><?php echo "<table style='margin:10px'>".$marks['codeT1']."</table>";?></div>
+   <div>&emsp;&emsp;&emsp;<img src="images/boxplot.png" alt="Boxplot grades"><span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span><img src="images/hist.png" alt="Image Description"></div>
       <script src="js/jquery.min.js"></script>
       <script src="js/bootstrap.bundle.min.js"></script>
       <script src="js/jquery-3.0.0.min.js"></script>

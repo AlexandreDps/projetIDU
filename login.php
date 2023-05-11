@@ -16,6 +16,7 @@ if (strcmp(strtoupper(trim($output)),"DONE") == 0)
 	session_start();
 	$_SESSION['username'] = $user;
 	$_SESSION['password'] = $psd;
+	$output=shell_exec("py viz.py ".$after_json);
 	#Calling the next php page in order to display the conversations
 	header("Location: cours.php");
 }
